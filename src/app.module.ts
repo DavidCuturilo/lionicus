@@ -2,6 +2,9 @@ import { Logger, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
+import { AuthController } from './auth/auth.controller';
+import { AuthModule } from './auth/auth.module';
+import { AuthService } from './auth/auth.service';
 import mongoconfig from './config/mongoconfig';
 import { Media, MediaSchema } from './schemas/media.schema';
 import { User, UserSchema } from './schemas/user.schema';
@@ -16,8 +19,9 @@ import { User, UserSchema } from './schemas/user.schema';
       { name: User.name, schema: UserSchema },
       { name: Media.name, schema: MediaSchema },
     ]),
+    AuthModule,
   ],
-  controllers: [AppController],
-  providers: [Logger],
+  controllers: [AppController, AuthController],
+  providers: [Logger, AuthService],
 })
 export class AppModule {}

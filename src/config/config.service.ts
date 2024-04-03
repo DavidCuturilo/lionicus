@@ -19,6 +19,15 @@ class ConfigService {
   public getPort() {
     return this.getValue('PORT', true);
   }
+
+  public getJwtConfig() {
+    return {
+      secret: this.getValue('JWT_SECRET'),
+      signOptions: {
+        expiresIn: this.getValue('JWT_EXPIRES_IN'),
+      },
+    };
+  }
 }
 
 const configService = new ConfigService(process.env);
