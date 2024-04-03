@@ -6,7 +6,9 @@ import {
   Request,
   UseGuards,
 } from '@nestjs/common';
+import { Roles } from 'src/decorators/user-role.decorator';
 import { UserDto } from 'src/dto/user.dto';
+import { UserRole } from 'src/enums/user-role.enum';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { AuthService } from './auth.service';
 
@@ -25,6 +27,7 @@ export class AuthController {
   }
 
   @UseGuards(AuthGuard)
+  @Roles(UserRole.USER)
   @Get('test')
   async test(@Request() req) {
     return req.email;
