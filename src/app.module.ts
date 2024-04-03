@@ -1,14 +1,15 @@
-import { Logger, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
+import { Logger, MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AppController } from './app.controller';
+import { LoggerMiddleware } from './middleware/logger.middleware';
 import { AuthController } from './auth/auth.controller';
-import { AuthModule } from './auth/auth.module';
 import { AuthService } from './auth/auth.service';
 import mongoconfig from './config/mongoconfig';
+import { User, UserSchema } from './schemas/user.schema';
+import { AuthModule } from './auth/auth.module';
 import { UserRolesGuard } from './guards/user-role.guard';
 import { Media, MediaSchema } from './schemas/media.schema';
-import { User, UserSchema } from './schemas/user.schema';
 
 @Module({
   imports: [
@@ -25,4 +26,8 @@ import { User, UserSchema } from './schemas/user.schema';
   controllers: [AppController, AuthController],
   providers: [Logger, AuthService, UserRolesGuard],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(LoggerMiddleware).forRoutes('*');
+  }
+}

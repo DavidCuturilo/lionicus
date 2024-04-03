@@ -5,6 +5,7 @@ import { UserDto } from 'src/dto/user.dto';
 import { User, UserDocument } from 'src/schemas/user.schema';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
+import winston_logger from 'src/winston-logger/winston.logger';
 
 @Injectable()
 export class AuthService {
@@ -31,6 +32,8 @@ export class AuthService {
     if (!userMatch) {
       throw new UnauthorizedException();
     }
+
+    winston_logger.info(`User ${userData.email} successfully logged in`);
 
     const payload = { sub: userData._id, email: userData.email };
     return {
