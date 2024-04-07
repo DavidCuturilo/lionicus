@@ -35,7 +35,11 @@ export class AuthService {
 
     winston_logger.info(`User ${userData.email} successfully logged in`);
 
-    const payload = { sub: userData._id, email: userData.email };
+    const payload = {
+      sub: userData._id,
+      email: userData.email,
+      role: userData.role,
+    };
     return {
       access_token: await this.jwtService.signAsync(payload),
     };
