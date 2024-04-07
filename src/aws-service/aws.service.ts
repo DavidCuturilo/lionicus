@@ -69,6 +69,7 @@ export class AwsService {
   }
 
   async downloadFile(fileId: string) {
+    winston_logger.info(`Download started...`);
     const file = await this.mediaModel.findOne({ fileId });
     if (!file) {
       throw new Error('File not found');
@@ -102,6 +103,7 @@ export class AwsService {
   }
 
   async deleteFile(fileId: string) {
+    winston_logger.info(`Deleting file...`);
     const file = await this.mediaModel.findOne({ fileId });
     if (!file) {
       throw new Error('File not found');
@@ -117,6 +119,7 @@ export class AwsService {
   }
 
   async updateFile(fileId: string, file: Express.Multer.File) {
+    winston_logger.info(`Updating file...`);
     const existingFile = await this.mediaModel.findOne({ fileId });
     if (!existingFile) {
       throw new Error('File not found');
@@ -131,5 +134,19 @@ export class AwsService {
       { fileId },
       { name: file.originalname, type: file.mimetype },
     );
+    winston_logger.info(`File with id ${fileId} updated successfully`);
+  }
+
+  async seedData(files: Express.Multer.File[]) {
+    winston_logger.info(`Seeding data...`);
+    const response = [];
+    for (const file of files) {
+      response.push((await this.uploadFile(file)).fileId);
+    }
+    winston_logger.info(`Data seeded successfully`);
+    return {
+      message: 'Files uploaded successfully',
+      fileIds: response,
+    };
   }
 }
