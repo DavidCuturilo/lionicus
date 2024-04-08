@@ -55,8 +55,8 @@ export class AwsController {
 
   @Roles(UserRole.ADMIN, UserRole.SUPER_ADMIN)
   @UseInterceptors(FilesInterceptor('files'))
-  @Post('seed-data')
-  async seedData(@UploadedFiles() files: Array<Express.Multer.File>) {
-    return await this.awsService.seedData(files);
+  @Post('upload-files')
+  async uploadFiles(@UploadedFiles() files: Array<Express.Multer.File>) {
+    return await this.awsService.uploadFiles(files);
   }
 }

@@ -11,6 +11,8 @@ import { AuthModule } from './auth/auth.module';
 import { UserRolesGuard } from './guards/user-role.guard';
 import { Media, MediaSchema } from './schemas/media.schema';
 import { AwsModule } from './aws-service/aws.module';
+import { AwsController } from './aws-service/aws.controller';
+import { AwsService } from './aws-service/aws.service';
 
 @Module({
   imports: [
@@ -25,8 +27,8 @@ import { AwsModule } from './aws-service/aws.module';
     AuthModule,
     AwsModule,
   ],
-  controllers: [AppController, AuthController],
-  providers: [Logger, AuthService, UserRolesGuard],
+  controllers: [AppController, AuthController, AwsController],
+  providers: [Logger, AuthService, AwsService, UserRolesGuard],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

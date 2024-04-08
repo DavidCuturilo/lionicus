@@ -137,7 +137,7 @@ export class AwsService {
     winston_logger.info(`File with id ${fileId} updated successfully`);
   }
 
-  async seedData(files: Express.Multer.File[]) {
+  async uploadFiles(files: Express.Multer.File[]) {
     winston_logger.info(`Seeding data...`);
     const response = [];
     for (const file of files) {
@@ -148,5 +148,9 @@ export class AwsService {
       message: 'Files uploaded successfully',
       fileIds: response,
     };
+  }
+
+  async truncateMediaSchema() {
+    await this.mediaModel.deleteMany({});
   }
 }
