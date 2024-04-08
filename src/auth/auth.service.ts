@@ -19,8 +19,13 @@ export class AuthService {
     const newUser = {
       email: user.email,
       password: await bcrypt.hash(user.password, 10),
+      role: user.userRole,
     };
-    return await this.userModel.create(newUser);
+
+    await this.userModel.create(newUser);
+    return {
+      message: 'User registered successfully',
+    };
   }
 
   async login(user: UserDto) {
